@@ -15,10 +15,18 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import netty.inboundHandler.HttpInboundHandler;
 import netty.inboundHandler.HttpInboundInitializer;
+import netty.inboundHandler.filter.HttpRequestFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.net.InetSocketAddress;
+import java.net.JarURLConnection;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.jar.JarFile;
 
 /**
  * @Author weiwei
@@ -29,8 +37,8 @@ public class NettyGateway {
 
     private static Logger log = LoggerFactory.getLogger(NettyGateway.class);
 
+    public static  List<HttpRequestFilter> filterList =new ArrayList<>();
 
-    private final String webSocketPath = "/webSocket";
 
     public static void main(String[] args) throws InterruptedException {
         String proxyServer = "http://localhost:8081/";
@@ -67,8 +75,38 @@ public class NettyGateway {
         // 连接数达到是会创建一个通道
         bootstrap.childHandler(new HttpInboundInitializer(proxyServer));
         ChannelFuture channelFuture = bootstrap.bind().sync();
+        //加载所有过滤器
+        initFilter();
         log.info("Netty启动");
         channelFuture.channel().closeFuture().sync();
 
     }
+
+    private static void initFilter(){
+        String packageName = "netty.inboundHandler.filter";
+        String packagePath = packageName.replace(".", "/");
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        URL url = loader.getResource(packagePath);
+        if(url != null){
+            String fileSearchPath = url.getPath();
+            try {
+                File file = new File(URLDecoder.decode(fileSearchPath,"UTF-8"));
+                File[] childFiles = file.listFiles();
+                for (File childFile : childFiles){
+                    String childFilePath = childFile.getPath();
+                    childFilePath = childFilePath.substring(childFilePath.indexOf("\\classes") + 9, childFilePath.lastIndexOf("."));
+                    childFilePath = childFilePath.replace("\\", ".");
+                    if(!childFilePath.equals(packageName+".HttpRequestFilter")){
+                        HttpRequestFilter filter = (HttpRequestFilter)Class.forName(childFilePath).newInstance();
+                        filterList.add(filter);
+                    }
+
+                }
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+
 }
