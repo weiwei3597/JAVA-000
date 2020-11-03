@@ -14,6 +14,9 @@ import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpUtil;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.util.ReferenceCountUtil;
+import netty.NettyGateway;
+import netty.inboundHandler.filter.CommonFilter;
+import netty.inboundHandler.filter.HttpRequestFilter;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -25,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.List;
 
 import static io.netty.handler.codec.http.HttpResponseStatus.NO_CONTENT;
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;
@@ -39,6 +43,7 @@ public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
 
     private static Logger log = LoggerFactory.getLogger(HttpInboundHandler.class);
     private  String proxyServer;
+    private HttpOutboundHandler handler;
 
     public HttpInboundHandler(){
         this.proxyServer = "http://localhost:8081/";
@@ -46,6 +51,7 @@ public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
 
     public HttpInboundHandler(String  proxyServer){
         this.proxyServer = proxyServer;
+        handler = new HttpOutboundHandler(this.proxyServer);
     }
 
 
@@ -58,32 +64,13 @@ public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        FullHttpResponse response = null;
-        try {
-            log.info(String.format("接收到客户端socket消息：%s", msg));
-            CloseableHttpClient client = HttpClientBuilder.create().build();
-            HttpGet get = new HttpGet(proxyServer);
-            get.setHeader(HTTP.CONN_DIRECTIVE, HTTP.CONN_KEEP_ALIVE);
-            CloseableHttpResponse result = client.execute(get);
-            HttpEntity httpEntity = result.getEntity();
-            System.out.println("网关转发结束");
-            assert httpEntity != null;
-            response = new DefaultFullHttpResponse(HTTP_1_1, OK, Unpooled.wrappedBuffer( EntityUtils.toByteArray(httpEntity)));
-            response.headers().set("Content-Type", "application/json");
-            response.headers().setInt("Content-Length", Integer.parseInt(result.getFirstHeader("Content-Length").getValue()));
-        } catch(Exception e) {
-            e.printStackTrace();
-            response = new DefaultFullHttpResponse(HTTP_1_1, NO_CONTENT);
-            exceptionCaught(ctx, e);
-        } finally {
-            ctx.write(response);
-            ctx.flush();
-        }
-    }
-
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        cause.printStackTrace();
-        ctx.close();
+        FullHttpRequest req=(FullHttpRequest) msg;
+        //执行过滤器
+        List<HttpRequestFilter> filterList = NettyGateway.filterList;
+        filterList.forEach(filter->{
+            filter.filter(req,ctx);
+        });
+        handler.handle(ctx,req);
     }
 
 }
