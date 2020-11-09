@@ -28,6 +28,7 @@ public class Work3 {
         System.out.println("使用时间："+ (System.currentTimeMillis()-start) + " ms");
 
         // 然后退出main线程
+        executorService.shutdown();
     }
 
 
