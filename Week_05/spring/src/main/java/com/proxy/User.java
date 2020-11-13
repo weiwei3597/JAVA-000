@@ -17,7 +17,8 @@ public class User implements IUser{
     }
 
     @Override
-    public void doThing() {
-        System.out.println("doThing");
+    public String doThing(String s1) {
+        System.out.println("doThing"+s1);
+        return "result";
     }
 }

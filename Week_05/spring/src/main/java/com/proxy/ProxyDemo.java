@@ -20,6 +20,7 @@ public class ProxyDemo {
         ProxyFactory factory=new ProxyFactory(user);
         IUser proxyInstance = (IUser)factory.getProxyInstance();
         proxyInstance.doSomeThing();
-        proxyInstance.doThing();
+        String aa = proxyInstance.doThing("aa");
+        System.out.println(aa);
     }
 }

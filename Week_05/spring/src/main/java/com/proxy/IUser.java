@@ -11,5 +11,5 @@ package com.proxy;
 public interface IUser {
      void doSomeThing();
 
-     void doThing();
+     String doThing(String s1);
 }
