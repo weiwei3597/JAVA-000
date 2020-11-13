@@ -47,6 +47,8 @@ public class BeanAssembleTest {
     @Autowired
     private Class classTestConstructor;
 
+    @Resource(name = "beanAssembleFactoryXmlTest")
+    private  Student studentFactoryBean;
 
     @Resource(name = "beanAssembleAnnotationSetTest1")
     private Student student1;
@@ -73,6 +75,11 @@ public class BeanAssembleTest {
 
     @Test
     public void test3(){
+        System.out.println(JSON.toJSONString(studentFactoryBean));
+    }
+
+    @Test
+    public void test4(){
         System.out.println(JSON.toJSONString(student1));
         System.out.println(JSON.toJSONString(student2));
         System.out.println(JSON.toJSONString(student3));

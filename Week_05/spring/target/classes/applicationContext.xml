@@ -50,6 +50,12 @@
         </constructor-arg>
     </bean>
 
+    <!-- 工厂构造方式注入 -->
+    <bean id="factory" class="com.bean.StudentFactory" />
+    <bean id="beanAssembleFactoryXmlTest" factory-bean="factory"  factory-method="getStudent">
+    </bean>
+
+
     <context:annotation-config/>
     <context:component-scan base-package="com"/>
 
