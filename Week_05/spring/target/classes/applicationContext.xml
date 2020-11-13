@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context-3.2.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
+    
+    <!-- xmlSet方式注入 -->
+    <bean id="beanAssembleXmlSetTest1" class="com.bean.Student">
+        <property name="id" value="1" />
+        <property name="name" value="张三" />
+    </bean>
+
+    <bean id="beanAssembleXmlSetTest2" class="com.bean.Student">
+        <property name="id" value="2" />
+        <property name="name" value="李四" />
+    </bean>
+
+
+    <bean id="beanAssembleXmlSetTest3" class="com.bean.Class">
+        <property name="studentList" >
+            <list>
+                <ref bean="beanAssembleXmlSetTest1" />
+                <ref bean="beanAssembleXmlSetTest2" />
+            </list>
+        </property>
+    </bean>
+
+    <!-- xml构造方式注入 -->
+    <bean id="beanAssembleConstructorXmlTest1" class="com.bean.Student">
+        <constructor-arg name="id" value="1" />
+        <constructor-arg name="name" value="张三" />
+    </bean>
+
+    <bean id="beanAssembleXmlConstructorTest2" class="com.bean.Student">
+        <constructor-arg name="id" value="2" />
+        <constructor-arg name="name" value="李四" />
+    </bean>
+
+
+    <bean id="beanAssembleXmlConstructorTest3" class="com.bean.Class">
+        <constructor-arg name="studentList" >
+            <list>
+                <ref bean="beanAssembleXmlSetTest1" />
+                <ref bean="beanAssembleXmlSetTest2" />
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <context:annotation-config/>
+    <context:component-scan base-package="com"/>
+
+
+</beans>
