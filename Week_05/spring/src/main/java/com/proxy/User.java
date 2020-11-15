@@ -8,7 +8,7 @@ package com.proxy;
  * @Date 2020-11-13 13:59
  * @description
  **/
-public class User implements IUser{
+public class User implements IUser {
 
 
     @Override
@@ -18,7 +18,7 @@ public class User implements IUser{
 
     @Override
     public String doThing(String s1) {
-        System.out.println("doThing"+s1);
+        System.out.println("doThing" + s1);
         return "result";
     }
 }

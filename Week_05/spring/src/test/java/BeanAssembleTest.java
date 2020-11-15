@@ -20,7 +20,7 @@ import javax.annotation.Resource;
  * @description bean装配测试
  **/
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations ="classpath:applicationContext.xml")
+@ContextConfiguration(locations = "classpath:applicationContext.xml")
 public class BeanAssembleTest {
 
     @Qualifier("beanAssembleXmlSetTest1")
@@ -48,7 +48,7 @@ public class BeanAssembleTest {
     private Class classTestConstructor;
 
     @Resource(name = "beanAssembleFactoryXmlTest")
-    private  Student studentFactoryBean;
+    private Student studentFactoryBean;
 
     @Resource(name = "beanAssembleAnnotationSetTest1")
     private Student student1;
@@ -56,30 +56,30 @@ public class BeanAssembleTest {
     @Resource(name = "beanAssembleAnnotationSetTest2")
     private Student student2;
 
-    @Resource(name ="beanAssembleAnnotationSetTest3")
+    @Resource(name = "beanAssembleAnnotationSetTest3")
     private Class student3;
 
     @Test
-    public void test(){
+    public void test() {
         System.out.println(JSON.toJSONString(studentSet));
         System.out.println(JSON.toJSONString(studentSet2));
         System.out.println(JSON.toJSONString(classTestSet));
     }
 
     @Test
-    public void test2(){
+    public void test2() {
         System.out.println(JSON.toJSONString(studentConstructor));
         System.out.println(JSON.toJSONString(studentConstructor2));
         System.out.println(JSON.toJSONString(classTestConstructor));
     }
 
     @Test
-    public void test3(){
+    public void test3() {
         System.out.println(JSON.toJSONString(studentFactoryBean));
     }
 
     @Test
-    public void test4(){
+    public void test4() {
         System.out.println(JSON.toJSONString(student1));
         System.out.println(JSON.toJSONString(student2));
         System.out.println(JSON.toJSONString(student3));

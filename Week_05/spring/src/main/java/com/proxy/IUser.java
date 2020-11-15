@@ -9,7 +9,8 @@ package com.proxy;
  * @description:
  **/
 public interface IUser {
-     void doSomeThing();
 
-     String doThing(String s1);
+    void doSomeThing();
+
+    String doThing(String s1);
 }

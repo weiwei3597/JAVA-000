@@ -16,9 +16,9 @@ public class ProxyDemo {
 
 
     public static void main(String[] args) throws IllegalAccessException, InstantiationException {
-        IUser user=new User();
-        ProxyFactory factory=new ProxyFactory(user);
-        IUser proxyInstance = (IUser)factory.getProxyInstance();
+        IUser user = new User();
+        ProxyFactory factory = new ProxyFactory(user);
+        IUser proxyInstance = (IUser) factory.getProxyInstance();
         proxyInstance.doSomeThing();
         String aa = proxyInstance.doThing("aa");
         System.out.println(aa);
