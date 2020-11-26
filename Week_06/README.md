@@ -42,7 +42,7 @@ t_order
 | create_time    | datetime      | 创建时间                                                     |
 | update_by      | bigint(19)    | 更新人id                                                     |
 | update_time    | datetime      | 更新时间                                                     |
-| order_no       | varchanr(20)  | 订单编号                                                     |
+| order_no       | varchar(20)  | 订单编号                                                     |
 | user_id        | bigint(19)    | 下单用户id                                                   |
 | pay_time       | datetime      | 支付时间                                                     |
 | refund_time    | datetime      | 退款时间                                                     |
