@@ -1,6 +1,7 @@
 package com.mysql.demo;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -12,14 +13,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.util.ResourceUtils;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.SQLException;
 
-@SpringBootApplication
-		(exclude = { DataSourceAutoConfiguration.class,
-		DataSourceTransactionManagerAutoConfiguration.class,
-		JdbcTemplateAutoConfiguration.class})
+@SpringBootApplication()
 @Slf4j
 public class DemoApplication {
 
@@ -76,17 +78,9 @@ public class DemoApplication {
 //		return new JdbcTemplate(sDataSource);
 //	}
 
-
 	@Bean
 	public JdbcTemplate ssJdbcTemplate(DataSource dataSource) {
 		return new JdbcTemplate(dataSource);
-	}
-
-
-	@Bean
-	@Resource
-	public PlatformTransactionManager ssTxManager(DataSource shardingSphereDataSource) {
-		return new DataSourceTransactionManager(shardingSphereDataSource);
 	}
 
 }

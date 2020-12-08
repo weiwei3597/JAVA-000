@@ -1,14 +1,3 @@
-m:
- datasource:
-  url: jdbc:mysql://localhost:3306/test?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
-  username: root
-  password: root
-
-s:
-  datasource:
-    url: jdbc:mysql://localhost:13307/test?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
-    username: root
-    password:
 
 spring:
   main:
@@ -32,6 +21,7 @@ spring:
         username: root
         password:
     masterslave:
+      name: ms
       # 读写分离配置
       load-balance-algorithm-type: round_robin
       # 主库数据源名称

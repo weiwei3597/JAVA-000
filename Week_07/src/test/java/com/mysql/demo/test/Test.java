@@ -38,7 +38,7 @@ public class Test {
     @org.junit.jupiter.api.Test
     public void test2(){
         jdbcTemplate.update("INSERT INTO USER (id,username,phone,code) VALUES (?,?,?,?)", 3,"123","78","10");
-        String s = jdbcTemplate.queryForObject("SELECT phone FORM USER WHERE ID = 2", String.class);
+        String s = jdbcTemplate.queryForObject("SELECT phone FROM USER WHERE ID = 2", String.class);
         System.out.println(s);
     }
 
